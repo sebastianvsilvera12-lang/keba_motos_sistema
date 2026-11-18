@@ -1,0 +1,157 @@
+/keba_motos_sistema/
+│
+├── 📄 index.php                    # Panel principal de enlaces (Launcher y Dashboard)
+│
+├── 📂 /configuracion/                    # ⚙️ Configuración del sistema
+│   ├── conexion.php               # Conexión PDO a MySQL
+│   ├── keba.sql               # Script SQL para crear la BD
+│   ├── constantes.php             # Constantes globales (URL base, rutas)
+│   ├── session.php                # Inicio y validación de sesiones
+│   └── permisos.php               # Matriz de permisos por rol
+│
+├── 📂 /assets/                    # 🎨 Recursos estáticos
+│   ├── 📂 /css/
+│   │   ├── estilos.css            # Estilos generales
+│   │   ├── login.css              # Estilos específicos del login
+│   │   ├── dashboard.css          # Estilos del panel principal
+│   │   ├── formularios.css        # Estilos de formularios
+│   │   ├── tablas.css             # Estilos de tablas y listados
+│   │   ├── reportes.css           # Estilos para impresión (@media print)
+│   │   └── bootstrap.min.css      # Framework CSS (opcional)
+│   │
+│   ├── 📂 /js/
+│   │   ├── validaciones.js        # Validar DNI, placa, teléfono, etc.
+│   │   ├── dashboard.js           # Gráficos y dinámicos del panel
+│   │   ├── buscar.js              # Búsquedas en tiempo real (AJAX)
+│   │   └── bootstrap.bundle.min.js
+│   │
+│   ├── 📂 /img/
+│   │   ├── logo_keba.png          # Logo de KEBA MOTOS
+│   │   ├── favicon.ico
+│   │   ├── icono_moto.png
+│   │   ├── icono_conductor.png
+│   │   ├── icono_infraccion.png
+│   │   └── fondo_login.jpg
+│   │
+│   └── 📂 /fonts/                 # Tipografías personalizadas
+│       └── Roboto-Regular.ttf
+│
+├── 📂 /modelos/                    # 🗄️ Lógica de base de datos (Consultas SQL)
+│   ├── Usuario.php
+│   ├── Vehiculo.php
+│   ├── Conductor.php
+│   ├── Propietario.php
+│   ├── Asociacion.php
+│   ├── Infraccion.php
+│   ├── Documento.php
+│   └── Reporte.php                # Consultas para generar reportes
+│
+├── 📂 /controlador/               # 🎮 Procesan formularios (POST/GET)
+│   ├── auth/
+│   │   ├── login_controlador.php
+│   │   ├── logout_controlador.php
+│   │   └── registro_usuario.php
+│   ├── vehiculo_controlador.php
+│   ├── conductor_controlador.php
+│   ├── propietario_controlador.php
+│   ├── asociacion_controlador.php
+│   ├── infraccion_controlador.php
+│   ├── documento_controlador.php
+│   └── reporte_controlador.php
+│
+├── 📂 /intermediarios/                # 🔐 Seguridad y validación de roles
+│   ├── auth_middleware.php        # Verifica si hay sesión activa
+│   ├── rol_middleware.php         # Verifica permisos del rol
+│   └── csrf.php                   # Protección contra CSRF
+│
+├── 📂 /vista/                     # 🖥️ Páginas HTML/PHP (lo que ve el usuario)
+│   │
+│   ├── 📂 /auth/                  # Módulo de acceso y seguridad
+│   │   ├── login.php              # Formulario de inicio de sesión
+│   │   ├── recuperar.php          # Recuperar contraseña
+│   │   └── cambiar_password.php
+│   │
+│   ├── 📂 /dashboard/             # Panel principal
+│   │   ├── dashboard_admin.php    # Panel para Administrador
+│   │   ├── dashboard_personal.php # Panel para Personal administrativo
+│   │   └── dashboard_consulta.php # Panel para Usuario de consulta
+│   │
+│   ├── 📂 /vehiculos/             # Módulo de registro de vehículos
+│   │   ├── listar_vehiculos.php   # Tabla con todos los mototaxis
+│   │   ├── registrar_vehiculo.php # Formulario de nuevo vehículo
+│   │   ├── editar_vehiculo.php    # Formulario de edición
+│   │   ├── ver_vehiculo.php       # Vista detallada de un vehículo
+│   │   └── eliminar_vehiculo.php  # Confirmación de baja
+│   │
+│   ├── 📂 /conductores/           # Módulo de conductores
+│   │   ├── listar_conductores.php
+│   │   ├── registrar_conductor.php
+│   │   ├── editar_conductor.php
+│   │   └── ver_conductor.php
+│   │
+│   ├── 📂 /propietarios/          # Módulo de propietarios
+│   │   ├── listar_propietarios.php
+│   │   ├── registrar_propietario.php
+│   │   └── editar_propietario.php
+│   │
+│   ├── 📂 /asociaciones/          # Módulo de asociaciones/paraderos
+│   │   ├── listar_asociaciones.php
+│   │   ├── registrar_asociacion.php
+│   │   └── editar_asociacion.php
+│   │
+│   ├── 📂 /documentos/            # Módulo de documentos (SOAT, tarjeta, etc.)
+│   │   ├── listar_documentos.php
+│   │   ├── registrar_documento.php
+│   │   ├── documentos_por_vencer.php  # ⚠️ Alertas de vencimiento
+│   │   └── ver_documento.php
+│   │
+│   ├── 📂 /fiscalizacion/         # Módulo de infracciones
+│   │   ├── listar_infracciones.php
+│   │   ├── registrar_infraccion.php
+│   │   ├── editar_infraccion.php
+│   │   ├── historial_conductor.php    # Historial por conductor
+│   │   ├── historial_vehiculo.php     # Historial por placa
+│   │   └── infracciones_pendientes.php
+│   │
+│   ├── 📂 /reportes/              # Módulo de reportes
+│   │   ├── reporte_vehiculos.php
+│   │   ├── reporte_conductores.php
+│   │   ├── reporte_infracciones.php
+│   │   ├── reporte_documentos.php
+│   │   └── reporte_general.php    # Reporte consolidado
+│   │
+│   ├── 📂 /usuarios/              # Gestión de usuarios (solo Admin)
+│   │   ├── listar_usuarios.php
+│   │   ├── registrar_usuario.php
+│   │   └── editar_usuario.php
+│   │
+│   └── 📂 /plantillas/            # 🧩 Componentes reutilizables (partials)
+│       ├── header.php             # Cabecera común (meta tags, CSS)
+│       ├── sidebar.php            # Menú lateral según rol
+│       ├── navbar.php             # Barra superior con usuario y logout
+│       ├── footer.php             # Pie de página
+│       ├── mensajes.php           # Alertas de éxito/error
+│       └── modal_confirmar.php    # Modal genérico de confirmación
+│
+├── 📂 /subidas/                   # 📎 Archivos subidos (documentos escaneados)
+│   ├── /documentos/               # SOAT, licencias, tarjetas escaneadas
+│   ├── /fotos_vehiculos/          # Fotos de los mototaxis
+│   └── /fotos_conductores/        # Fotos de conductores
+│
+├── 📂 /reportes_pdf/              # 📄 Generación de PDFs
+│   ├── generar_pdf.php
+│   ├── plantilla_pdf.php
+│   └── /librerias/
+│       └── tcpdf/                 # Librería TCPDF o Dompdf
+│
+├── 📂 /ayudantes/                   # 🛠️ Funciones auxiliales
+│   ├── funciones.php              # Funciones globales (limpiar datos, formatear)
+│   ├── validaciones.php           # Validar DNI, placa, email, etc.
+│   ├── fechas.php                 # Formatear fechas al estilo peruano
+│   └── seguridad.php              # Cifrar contraseñas, generar tokens
+│
+│
+└── 📂 /docs/                      # 📚 Documentación
+    ├── manual_usuario.pdf
+    ├── manual_tecnico.pdf
+    └── diagrama_bd.png
