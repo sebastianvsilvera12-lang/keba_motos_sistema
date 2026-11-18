@@ -19,7 +19,7 @@ $permisos_rol = [
         'reportes' => ['ver', 'exportar_pdf', 'exportar_excel'],
         'usuarios' => ['ver', 'crear', 'editar', 'eliminar']
     ],
-    ROL_PERSONAL => [
+    ROL_ANALISTA => [
         'dashboard' => ['ver', 'personal'],
         'vehiculos' => ['ver', 'crear', 'editar'],
         'conductores' => ['ver', 'crear', 'editar'],
@@ -32,13 +32,13 @@ $permisos_rol = [
     ],
     ROL_CONSULTA => [
         'dashboard' => ['ver', 'consulta'],
-        'vehiculos' => ['ver'],
+        'vehiculos' => [],
         'conductores' => ['ver'],
-        'propietarios' => ['ver'],
-        'asociaciones' => ['ver'],
-        'documentos' => ['ver'],
-        'fiscalizacion' => ['ver'],
-        'reportes' => ['ver'],
+        'propietarios' => [],
+        'asociaciones' => [],
+        'documentos' => [],
+        'fiscalizacion' => [],
+        'reportes' => [],
         'usuarios' => []
     ]
 ];

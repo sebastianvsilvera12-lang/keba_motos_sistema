@@ -5,6 +5,7 @@
 
 require_once __DIR__ . '/config/constantes.php';
 require_once __DIR__ . '/config/session.php';
+require_once __DIR__ . '/config/permisos.php';
 require_once __DIR__ . '/middleware/auth_middleware.php';
 
 $usuarioActivo = obtenerUsuarioActual();
@@ -86,89 +87,125 @@ $rolNombre = strtoupper($usuarioActivo['rol_nombre'] ?? 'ADMINISTRADOR');
         <!-- CUADRÍCULA DE BOTONES DE NAVEGACIÓN (TILES) -->
         <section class="launcher-grid">
 
-            <!-- 1. ESTADÍSTICAS -->
-            <a href="views/dashboard/dashboard_admin.php" class="launcher-tile">
+            <?php
+            $dashUrl = 'views/dashboard/dashboard_admin.php';
+            if ($usuarioActivo['rol_id'] == ROL_CONSULTA) {
+                $dashUrl = 'views/dashboard/dashboard_consulta.php';
+            } elseif ($usuarioActivo['rol_id'] == ROL_ANALISTA || $usuarioActivo['rol_id'] == ROL_PERSONAL) {
+                $dashUrl = 'views/dashboard/dashboard_personal.php';
+            }
+            ?>
+            <!-- 1. ESTADÍSTICAS / DASHBOARD -->
+            <?php if (tienePermiso('dashboard', 'ver')): ?>
+            <a href="<?= $dashUrl ?>" class="launcher-tile">
                 <div class="tile-icon">📈</div>
                 <div class="tile-label">Estadísticas</div>
             </a>
+            <?php endif; ?>
 
             <!-- 2. REPORTES -->
+            <?php if (tienePermiso('reportes', 'ver')): ?>
             <a href="views/reportes/reporte_general.php" class="launcher-tile">
                 <div class="tile-icon">📑</div>
                 <div class="tile-label">Reportes</div>
             </a>
+            <?php endif; ?>
 
             <!-- 3. USUARIOS -->
+            <?php if (tienePermiso('usuarios', 'ver')): ?>
             <a href="views/usuarios/listar_usuarios.php" class="launcher-tile">
                 <div class="tile-icon">⚙️</div>
                 <div class="tile-label">Usuarios</div>
             </a>
+            <?php endif; ?>
 
             <!-- 4. MOTOTAXIS -->
+            <?php if (tienePermiso('vehiculos', 'ver')): ?>
             <a href="views/vehiculos/listar_vehiculos.php" class="launcher-tile">
                 <div class="tile-icon">🛵</div>
                 <div class="tile-label">Mototaxis</div>
             </a>
+            <?php endif; ?>
 
             <!-- 5. CONDUCTORES -->
+            <?php if (tienePermiso('conductores', 'ver')): ?>
             <a href="views/conductores/listar_conductores.php" class="launcher-tile">
                 <div class="tile-icon">👨‍✈️</div>
                 <div class="tile-label">Conductores</div>
             </a>
+            <?php endif; ?>
 
             <!-- 6. PROPIETARIOS -->
+            <?php if (tienePermiso('propietarios', 'ver')): ?>
             <a href="views/propietarios/listar_propietarios.php" class="launcher-tile">
                 <div class="tile-icon">👤</div>
                 <div class="tile-label">Propietarios</div>
             </a>
+            <?php endif; ?>
 
             <!-- 7. ASOCIACIONES -->
+            <?php if (tienePermiso('asociaciones', 'ver')): ?>
             <a href="views/asociaciones/listar_asociaciones.php" class="launcher-tile">
                 <div class="tile-icon">🏢</div>
                 <div class="tile-label">Asociaciones</div>
             </a>
+            <?php endif; ?>
 
             <!-- 8. DOCUMENTOS -->
+            <?php if (tienePermiso('documentos', 'ver')): ?>
             <a href="views/documentos/listar_documentos.php" class="launcher-tile">
                 <div class="tile-icon">📄</div>
                 <div class="tile-label">Documentos</div>
             </a>
+            <?php endif; ?>
 
             <!-- 9. VENCIMIENTOS -->
+            <?php if (tienePermiso('documentos', 'ver')): ?>
             <a href="views/documentos/documentos_por_vencer.php" class="launcher-tile">
                 <div class="tile-icon">⚠️</div>
                 <div class="tile-label">Vencimientos</div>
             </a>
+            <?php endif; ?>
 
             <!-- 10. FISCALIZACIÓN -->
+            <?php if (tienePermiso('fiscalizacion', 'ver')): ?>
             <a href="views/fiscalizacion/listar_infracciones.php" class="launcher-tile">
                 <div class="tile-icon">👮</div>
                 <div class="tile-label">Fiscalización</div>
             </a>
+            <?php endif; ?>
 
             <!-- 11. MULTAS PENDIENTES -->
+            <?php if (tienePermiso('fiscalizacion', 'ver')): ?>
             <a href="views/fiscalizacion/infracciones_pendientes.php" class="launcher-tile">
                 <div class="tile-icon">💰</div>
                 <div class="tile-label">Multas Pendientes</div>
             </a>
+            <?php endif; ?>
 
             <!-- 12. HISTORIAL PLACA -->
+            <?php if (tienePermiso('fiscalizacion', 'ver') || tienePermiso('vehiculos', 'ver')): ?>
             <a href="views/fiscalizacion/historial_vehiculo.php" class="launcher-tile">
                 <div class="tile-icon">🔍</div>
                 <div class="tile-label">Historial Placa</div>
             </a>
+            <?php endif; ?>
 
             <!-- 13. HISTORIAL CHOFER -->
+            <?php if (tienePermiso('conductores', 'ver')): ?>
             <a href="views/fiscalizacion/historial_conductor.php" class="launcher-tile">
                 <div class="tile-icon">📋</div>
                 <div class="tile-label">Historial Chofer</div>
             </a>
+            <?php endif; ?>
 
             <!-- 14. REGISTRO VEHÍCULO -->
+            <?php if (tienePermiso('vehiculos', 'crear')): ?>
             <a href="views/vehiculos/registrar_vehiculo.php" class="launcher-tile">
                 <div class="tile-icon">➕</div>
                 <div class="tile-label">Nuevo Vehículo</div>
             </a>
+            <?php endif; ?>
 
             <!-- 15. CERRAR SESIÓN -->
             <a href="controllers/auth/logout_controlador.php" class="launcher-tile" style="border-color: #fca5a5;">

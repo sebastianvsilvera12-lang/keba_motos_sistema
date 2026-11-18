@@ -28,7 +28,9 @@ if (!defined('APP_NAME')) {
     // Roles del Sistema
     define('ROL_ADMIN', 1);
     define('ROL_PERSONAL', 2);
+    define('ROL_ANALISTA', 2);
     define('ROL_CONSULTA', 3);
+    define('ROL_CONDUCTORES', 3);
 
     // Zona Horaria
     date_default_timezone_set('America/Lima');

@@ -6,6 +6,14 @@ $menuActivo = 'usuarios';
 require_once dirname(__DIR__) . '/plantillas/header.php';
 require_once dirname(__DIR__) . '/plantillas/sidebar.php';
 require_once dirname(__DIR__) . '/plantillas/navbar.php';
+require_once dirname(dirname(__DIR__)) . '/config/conexion.php';
+
+try {
+    $db = Database::conectar();
+    $rolesDisponibles = $db->query("SELECT * FROM roles ORDER BY id_rol ASC")->fetchAll();
+} catch (Exception $e) {
+    $rolesDisponibles = [];
+}
 ?>
 
 <div class="page-header">
@@ -24,9 +32,17 @@ require_once dirname(__DIR__) . '/plantillas/navbar.php';
             <div class="form-group">
                 <label for="id_rol">Rol de Acceso <span class="required">*</span></label>
                 <select id="id_rol" name="id_rol" class="form-control" required>
-                    <option value="1">Administrador (Control Total)</option>
-                    <option value="2" selected>Personal Administrativo</option>
-                    <option value="3">Usuario de Consulta</option>
+                    <?php if (!empty($rolesDisponibles)): ?>
+                        <?php foreach ($rolesDisponibles as $r): ?>
+                            <option value="<?= $r['id_rol'] ?>" <?= $r['id_rol'] == 2 ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($r['nombre_rol']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="1">Administrador</option>
+                        <option value="2" selected>Analista</option>
+                        <option value="3">Conductores</option>
+                    <?php endif; ?>
                 </select>
             </div>
 

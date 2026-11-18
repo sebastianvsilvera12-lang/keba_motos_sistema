@@ -17,7 +17,9 @@ $conductores = $conductorMod->listarTodos();
         <h1 class="page-title">Padrón de Conductores</h1>
         <p class="page-subtitle">Listado de choferes autorizados para operar mototaxis</p>
     </div>
+    <?php if (tienePermiso('conductores', 'crear')): ?>
     <a href="<?= vistaUrl('conductores/registrar_conductor.php') ?>" class="btn btn-primary">+ Nuevo Conductor</a>
+    <?php endif; ?>
 </div>
 
 <div class="card">
@@ -64,8 +66,12 @@ $conductores = $conductorMod->listarTodos();
                     </td>
                     <td style="text-align: right;">
                         <a href="<?= vistaUrl('conductores/ver_conductor.php?id=' . $c['id_conductor']) ?>" class="btn btn-outline btn-sm">Ver</a>
+                        <?php if (tienePermiso('conductores', 'editar')): ?>
                         <a href="<?= vistaUrl('conductores/editar_conductor.php?id=' . $c['id_conductor']) ?>" class="btn btn-primary btn-sm">Editar</a>
+                        <?php endif; ?>
+                        <?php if (tienePermiso('conductores', 'eliminar')): ?>
                         <a href="<?= controladorUrl('conductor_controlador.php?accion=eliminar&id=' . $c['id_conductor']) ?>" class="btn btn-danger btn-sm btn-confirmar-eliminar">Eliminar</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

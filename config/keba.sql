@@ -225,14 +225,14 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- 1. Roles del sistema
 INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
 (1, 'Administrador', 'Control total de usuarios, configuraciones y módulos'),
-(2, 'Personal Administrativo', 'Gestión operativa de mototaxis, conductores y actas'),
-(3, 'Usuario de Consulta', 'Acceso de solo lectura para fiscalizadores y reportes');
+(2, 'Analista', 'Gestión y análisis operativo de mototaxis, conductores y actas'),
+(3, 'Conductores', 'Acceso exclusivo de consulta para el padrón de conductores y licencias');
 
 -- 2. Usuarios Principales del Sistema
--- Usuario 1: Sebastian alfredo Vargas silvera (DNI: 61205626, Clave: kirishima12)
--- Usuario 2: Administrador General (admin / admin123)
--- Usuario 3: Personal Administrativo (personal / admin123)
--- Usuario 4: Inspector de Campo (consulta / admin123)
+-- Usuario 1: Sebastian alfredo Vargas silvera (sebastian)
+-- Usuario 2: Administrador General (admin)
+-- Usuario 3: Analista (personal)
+-- Usuario 4: Conductores (consulta)
 INSERT INTO `usuarios` (`id_usuario`, `id_rol`, `dni`, `nombres`, `apellidos`, `usuario`, `password`, `email`, `telefono`, `estado`) VALUES
 (1, 1, '61205626', 'Sebastian alfredo', 'Vargas silvera', 'sebastian', '$2y$12$AI04WyBqxUNrTxxSfpQKhuAS5.FyApLLfFShNujUpXyXtxdLEU3qe', 'sebastian@kebamotos.pe', '984512301', 'Activo'),
 (2, 1, '70001122', 'Administrador', 'KEBA MOTOS', 'admin', '$2y$12$PM6OYDugwuPdMN9m34fWN.XOPwZJsxiMT4V3uZsey2PMRsGJqeZfy', 'admin@kebamotos.pe', '987654321', 'Activo'),

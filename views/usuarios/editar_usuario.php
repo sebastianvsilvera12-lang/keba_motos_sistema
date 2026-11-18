@@ -12,6 +12,13 @@ $id = (int)($_GET['id'] ?? 0);
 $userMod = new Usuario();
 $u = $userMod->obtenerPorId($id);
 
+try {
+    $db = Database::conectar();
+    $rolesDisponibles = $db->query("SELECT * FROM roles ORDER BY id_rol ASC")->fetchAll();
+} catch (Exception $e) {
+    $rolesDisponibles = [];
+}
+
 if (!$u) {
     echo "<div class='alert alert-danger'>Usuario no encontrado.</div>";
     require_once dirname(__DIR__) . '/plantillas/footer.php';
@@ -36,9 +43,17 @@ if (!$u) {
             <div class="form-group">
                 <label for="id_rol">Rol de Acceso</label>
                 <select id="id_rol" name="id_rol" class="form-control" required>
-                    <option value="1" <?= $u['id_rol'] == 1 ? 'selected' : '' ?>>Administrador</option>
-                    <option value="2" <?= $u['id_rol'] == 2 ? 'selected' : '' ?>>Personal Administrativo</option>
-                    <option value="3" <?= $u['id_rol'] == 3 ? 'selected' : '' ?>>Usuario de Consulta</option>
+                    <?php if (!empty($rolesDisponibles)): ?>
+                        <?php foreach ($rolesDisponibles as $r): ?>
+                            <option value="<?= $r['id_rol'] ?>" <?= $u['id_rol'] == $r['id_rol'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($r['nombre_rol']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="1" <?= $u['id_rol'] == 1 ? 'selected' : '' ?>>Administrador</option>
+                        <option value="2" <?= $u['id_rol'] == 2 ? 'selected' : '' ?>>Analista</option>
+                        <option value="3" <?= $u['id_rol'] == 3 ? 'selected' : '' ?>>Conductores</option>
+                    <?php endif; ?>
                 </select>
             </div>
 
