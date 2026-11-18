@@ -4,7 +4,7 @@
 │
 ├── 📂 /config/                    # ⚙️ Configuración del sistema
 │   ├── conexion.php               # Conexión PDO a MySQL
-│   ├── database.sql               # Script SQL para crear la BD
+│   ├── keba.sql               # Script SQL para crear la BD
 │   ├── constantes.php             # Constantes globales (URL base, rutas)
 │   ├── session.php                # Inicio y validación de sesiones
 │   └── permisos.php               # Matriz de permisos por rol

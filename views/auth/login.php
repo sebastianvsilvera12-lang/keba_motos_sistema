@@ -40,7 +40,7 @@ require_once dirname(dirname(__DIR__)) . '/helpers/funciones.php';
     <div class="login-footer">
         <a href="<?= vistaUrl('auth/recuperar.php') ?>">¿Olvidaste tu contraseña?</a>
         <div style="margin-top: 15px; font-size: 0.8rem; color: #94a3b8;">
-            Credenciales de prueba: <strong>admin</strong> / <strong>admin123</strong>
+            Credenciales: DNI <strong>61205626</strong> (clave: <strong>kirishima12</strong>) o <strong>admin</strong> (clave: <strong>admin123</strong>)
         </div>
         <div style="margin-top: 10px;">
             <a href="<?= BASE_URL ?>index.html" style="font-size: 0.82rem; color: #64748b;">← Volver al índice de enlaces</a>
