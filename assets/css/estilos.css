@@ -1,0 +1,663 @@
+/* ==============================================================
+   KEBA MOTOS - SISTEMA DE GESTIÓN Y FISCALIZACIÓN
+   PALETA PRINCIPAL: NEGRO, BLANCO Y AZUL
+   ============================================================== */
+
+:root {
+    --color-primary: #0284c7;        /* Azul vibrante */
+    --color-primary-dark: #0369a1;   /* Azul intenso */
+    --color-primary-light: #e0f2fe;  /* Azul fondo suave */
+    --color-blue-accent: #2563eb;    /* Azul eléctrico */
+    
+    --color-black: #050811;          /* Negro profundo */
+    --color-black-card: #0d121f;     /* Negro tarjeta launcher */
+    --color-black-border: #1a233a;   /* Borde tarjetas */
+    --color-black-light: #1e293b;    /* Negro grafito */
+    
+    --color-white: #ffffff;          /* Blanco puro */
+    --color-gray-50: #f8fafc;        /* Blanco fondo */
+    --color-gray-100: #f1f5f9;       /* Blanco grisáceo */
+    --color-gray-200: #e2e8f0;       /* Bordes */
+    --color-gray-500: #64748b;       /* Texto secundario */
+    --color-gray-700: #334155;       /* Texto cuerpo */
+
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+    --color-info: #0284c7;
+
+    --sidebar-width: 260px;
+    --header-height: 65px;
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+body {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-700);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==============================================================
+   ESTILOS DE LA PANTALLA PRINCIPAL / INDEX (BLANCO, AZUL Y NEGRO)
+   ============================================================== */
+body.index-body {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* NAVBAR SUPERIOR - NEGRO CON DETALLE AZUL */
+.launcher-navbar {
+    height: 70px;
+    background-color: #080d1a;
+    border-bottom: 2px solid #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.launcher-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.launcher-brand span.logo-badge {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.launcher-center-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    background-color: #111827;
+    border: 1px solid #1f2937;
+    padding: 7px 18px;
+    border-radius: 8px;
+}
+
+.launcher-center-info strong {
+    color: #60a5fa;
+}
+
+.launcher-user-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #111827;
+    border: 1px solid #1f2937;
+    padding: 6px 16px 6px 8px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.launcher-user-pill:hover {
+    border-color: #2563eb;
+    background-color: #1f2937;
+}
+
+.launcher-avatar {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.launcher-user-meta {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.launcher-user-meta .name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+}
+
+.launcher-user-meta .role {
+    font-size: 0.7rem;
+    color: #94a3b8;
+}
+
+.launcher-navbar .navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.launcher-navbar .navbar-user .btn-outline:hover {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+/* CONTENEDOR CENTRAL - FONDO CLARO */
+.launcher-container {
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px 20px;
+    flex: 1;
+}
+
+/* BANNER DE BIENVENIDA - TARJETA BLANCA CON BORDE AZUL LATERAL */
+.launcher-welcome-banner {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #2563eb;
+    border-radius: 12px;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.welcome-info h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.role-badge {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.welcome-info p {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.welcome-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.meta-pill {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-pill.online {
+    background-color: #ecfdf5;
+    border-color: #a7f3d0;
+    color: #065f46;
+}
+
+.meta-pill.online .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+}
+
+/* CUADRÍCULA DE BOTONES / TILES */
+.launcher-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 1100px) {
+    .launcher-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .launcher-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .launcher-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* BOTONES (TILES) - BLANCOS CON TEXTO Y ACENTOS AZULES */
+.launcher-tile {
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 15px;
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+.launcher-tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.launcher-tile:hover {
+    background-color: #f8fafc;
+    border-color: #2563eb;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.16);
+}
+
+.launcher-tile:hover::before {
+    background: #2563eb;
+}
+
+.launcher-tile .tile-icon {
+    font-size: 2rem;
+    color: #2563eb;
+    margin-bottom: 12px;
+    transition: transform 0.2s ease;
+}
+
+.launcher-tile:hover .tile-icon {
+    transform: scale(1.1);
+    color: #1d4ed8;
+}
+
+.launcher-tile .tile-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #1e3a8a;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: color 0.2s ease;
+}
+
+.launcher-tile:hover .tile-label {
+    color: #2563eb;
+}
+
+/* FOOTER DEL LAUNCHER - NEGRO ELEGANTE */
+.launcher-footer {
+    height: 50px;
+    background-color: #080d1a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    font-size: 0.82rem;
+    color: #94a3b8;
+}
+
+.launcher-footer strong {
+    color: #ffffff;
+}
+
+/* ==============================================================
+   LAYOUT DE MÓDULOS INTERNOS
+   ============================================================== */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.sidebar-header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #030712;
+    border-bottom: 2px solid var(--color-blue-accent);
+}
+
+.sidebar-brand {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-brand span {
+    color: var(--color-blue-accent);
+}
+
+.sidebar-menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 0;
+    list-style: none;
+}
+
+.menu-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #94a3b8;
+    padding: 15px 25px 8px 25px;
+    letter-spacing: 0.05em;
+}
+
+.menu-item a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 25px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.menu-item a:hover {
+    background-color: var(--color-black-light);
+    color: var(--color-white);
+    border-left-color: var(--color-blue-accent);
+}
+
+.menu-item.active a {
+    background-color: rgba(37, 99, 235, 0.15);
+    color: #60a5fa;
+    border-left-color: var(--color-blue-accent);
+    font-weight: 600;
+}
+
+.app-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-navbar {
+    height: var(--header-height);
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-black);
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-badge {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--color-black);
+    font-size: 0.9rem;
+}
+
+.app-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.page-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-black);
+}
+
+.page-subtitle {
+    color: var(--color-gray-500);
+    font-size: 0.95rem;
+    margin-top: 4px;
+}
+
+/* BOTONES */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background-color: var(--color-blue-accent);
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.btn-dark {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+.btn-dark:hover {
+    background-color: var(--color-black-light);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--color-gray-200);
+    color: var(--color-gray-700);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-gray-50);
+    border-color: var(--color-gray-500);
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* TARJETAS (CARDS) */
+.card {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    border: 1px solid var(--color-gray-200);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    margin-bottom: 25px;
+}
+
+.card-header {
+    border-bottom: 1px solid var(--color-gray-200);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-black);
+}
+
+.app-footer {
+    height: 50px;
+    background-color: var(--color-white);
+    border-top: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    font-size: 0.85rem;
+    color: var(--color-gray-500);
+}
+
+.alert {
+    padding: 14px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alert-success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.alert-danger {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.alert-warning {
+    background-color: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.alert-info {
+    background-color: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}

@@ -1,0 +1,73 @@
+/* ==============================================================
+   KEBA MOTOS - ESTILOS DE REPORTES Y VISTA DE IMPRESIÓN
+   ============================================================== */
+
+.report-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.report-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #0b1329;
+}
+
+.report-logo span {
+    color: #2563eb;
+}
+
+.report-meta {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+@media print {
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    .app-sidebar,
+    .app-navbar,
+    .app-footer,
+    .btn,
+    .table-toolbar,
+    .no-print {
+        display: none !important;
+    }
+
+    .app-main {
+        margin-left: 0 !important;
+    }
+
+    .app-content {
+        padding: 0 !important;
+    }
+
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .table-custom thead tr {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
