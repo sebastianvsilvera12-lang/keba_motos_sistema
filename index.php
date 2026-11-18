@@ -3,10 +3,16 @@
 // PANEL PRINCIPAL DE ENLACES (LAUNCHER) - KEBA MOTOS
 // ==============================================================
 
+<<<<<<< HEAD
 require_once __DIR__ . '/config/constantes.php';
 require_once __DIR__ . '/config/session.php';
 require_once __DIR__ . '/config/permisos.php';
 require_once __DIR__ . '/middleware/auth_middleware.php';
+=======
+require_once __DIR__ . '/configuracion/constantes.php';
+require_once __DIR__ . '/configuracion/session.php';
+require_once __DIR__ . '/intermediarios/auth_middleware.php';
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
 
 $usuarioActivo = obtenerUsuarioActual();
 $nombreCompleto = trim(($usuarioActivo['nombre'] ?? '') . ' ' . ($usuarioActivo['apellidos'] ?? ''));
@@ -40,8 +46,11 @@ $rolNombre = strtoupper($usuarioActivo['rol_nombre'] ?? 'ADMINISTRADOR');
 
         <div class="navbar-user">
             <span class="user-badge"><?= htmlspecialchars($usuarioActivo['rol_nombre'] ?? 'Administrador') ?></span>
-            <span class="user-name" style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">👤 <?= htmlspecialchars($nombreCompleto) ?></span>
-            <a href="controllers/auth/logout_controlador.php" class="btn btn-outline btn-sm" style="color: #ffffff; border-color: #475569; background-color: #1e293b;">Salir</a>
+            <span class="user-name" style="color: #ffffff; font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 6px;">
+                <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <?= htmlspecialchars($nombreCompleto) ?>
+            </span>
+            <a href="controlador/auth/logout_controlador.php" class="btn btn-outline btn-sm" style="color: #ffffff; border-color: #475569; background-color: #1e293b;">Salir</a>
         </div>
     </header>
 
@@ -54,7 +63,7 @@ $rolNombre = strtoupper($usuarioActivo['rol_nombre'] ?? 'ADMINISTRADOR');
         if ($flash): 
         ?>
         <div class="alert alert-<?= htmlspecialchars($flash['tipo']) ?>" style="margin-bottom: 20px;">
-            <span>🔔</span>
+            <svg style="width: 18px; height: 18px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
             <div><?= htmlspecialchars($flash['mensaje']) ?></div>
         </div>
         <?php endif; ?>
@@ -67,14 +76,14 @@ $rolNombre = strtoupper($usuarioActivo['rol_nombre'] ?? 'ADMINISTRADOR');
                     <span class="role-badge"><?= htmlspecialchars($rolNombre) ?></span>
                 </h2>
                 <p>
-                    <span>🏛️</span>
+                    <svg style="width: 16px; height: 16px; color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="6" x2="9" y2="6.01"></line><line x1="15" y1="6" x2="15" y2="6.01"></line><line x1="9" y1="10" x2="9" y2="10.01"></line><line x1="15" y1="10" x2="15" y2="10.01"></line><line x1="9" y1="14" x2="9" y2="14.01"></line><line x1="15" y1="14" x2="15" y2="14.01"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
                     KEBA MOTOS • Sistema Integrado de Control, Gestión y Fiscalización
                 </p>
             </div>
 
             <div class="welcome-meta">
                 <div class="meta-pill">
-                    <span>📅</span>
+                    <svg style="width: 16px; height: 16px; color: #64748b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     <span id="fechaActual"><?= date('d/m/Y') ?></span>
                 </div>
                 <div class="meta-pill online">
@@ -87,6 +96,7 @@ $rolNombre = strtoupper($usuarioActivo['rol_nombre'] ?? 'ADMINISTRADOR');
         <!-- CUADRÍCULA DE BOTONES DE NAVEGACIÓN (TILES) -->
         <section class="launcher-grid">
 
+<<<<<<< HEAD
             <?php
             $dashUrl = 'views/dashboard/dashboard_admin.php';
             if ($usuarioActivo['rol_id'] == ROL_CONSULTA) {
@@ -99,117 +109,217 @@ $rolNombre = strtoupper($usuarioActivo['rol_nombre'] ?? 'ADMINISTRADOR');
             <?php if (tienePermiso('dashboard', 'ver')): ?>
             <a href="<?= $dashUrl ?>" class="launcher-tile">
                 <div class="tile-icon">📈</div>
+=======
+            <!-- 1. ESTADÍSTICAS -->
+            <a href="vista/dashboard/dashboard_admin.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Estadísticas</div>
             </a>
             <?php endif; ?>
 
             <!-- 2. REPORTES -->
+<<<<<<< HEAD
             <?php if (tienePermiso('reportes', 'ver')): ?>
             <a href="views/reportes/reporte_general.php" class="launcher-tile">
                 <div class="tile-icon">📑</div>
+=======
+            <a href="vista/reportes/reporte_general.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Reportes</div>
             </a>
             <?php endif; ?>
 
             <!-- 3. USUARIOS -->
+<<<<<<< HEAD
             <?php if (tienePermiso('usuarios', 'ver')): ?>
             <a href="views/usuarios/listar_usuarios.php" class="launcher-tile">
                 <div class="tile-icon">⚙️</div>
+=======
+            <a href="vista/usuarios/listar_usuarios.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Usuarios</div>
             </a>
             <?php endif; ?>
 
             <!-- 4. MOTOTAXIS -->
+<<<<<<< HEAD
             <?php if (tienePermiso('vehiculos', 'ver')): ?>
             <a href="views/vehiculos/listar_vehiculos.php" class="launcher-tile">
                 <div class="tile-icon">🛵</div>
+=======
+            <a href="vista/vehiculos/listar_vehiculos.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="17" r="3"></circle><circle cx="19" cy="17" r="3"></circle><path d="M5 17h14"></path><path d="M9 17l2-7h4l2 7"></path><path d="M11 10h4"></path><circle cx="12" cy="6" r="1"></circle></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Mototaxis</div>
             </a>
             <?php endif; ?>
 
             <!-- 5. CONDUCTORES -->
+<<<<<<< HEAD
             <?php if (tienePermiso('conductores', 'ver')): ?>
             <a href="views/conductores/listar_conductores.php" class="launcher-tile">
                 <div class="tile-icon">👨‍✈️</div>
+=======
+            <a href="vista/conductores/listar_conductores.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><line x1="15" y1="8" x2="17" y2="8"></line><line x1="15" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Conductores</div>
             </a>
             <?php endif; ?>
 
             <!-- 6. PROPIETARIOS -->
+<<<<<<< HEAD
             <?php if (tienePermiso('propietarios', 'ver')): ?>
             <a href="views/propietarios/listar_propietarios.php" class="launcher-tile">
                 <div class="tile-icon">👤</div>
+=======
+            <a href="vista/propietarios/listar_propietarios.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Propietarios</div>
             </a>
             <?php endif; ?>
 
             <!-- 7. ASOCIACIONES -->
+<<<<<<< HEAD
             <?php if (tienePermiso('asociaciones', 'ver')): ?>
             <a href="views/asociaciones/listar_asociaciones.php" class="launcher-tile">
                 <div class="tile-icon">🏢</div>
+=======
+            <a href="vista/asociaciones/listar_asociaciones.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="6" x2="9" y2="6.01"></line><line x1="15" y1="6" x2="15" y2="6.01"></line><line x1="9" y1="10" x2="9" y2="10.01"></line><line x1="15" y1="10" x2="15" y2="10.01"></line><line x1="9" y1="14" x2="9" y2="14.01"></line><line x1="15" y1="14" x2="15" y2="14.01"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Asociaciones</div>
             </a>
             <?php endif; ?>
 
             <!-- 8. DOCUMENTOS -->
+<<<<<<< HEAD
             <?php if (tienePermiso('documentos', 'ver')): ?>
             <a href="views/documentos/listar_documentos.php" class="launcher-tile">
                 <div class="tile-icon">📄</div>
+=======
+            <a href="vista/documentos/listar_documentos.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="9 15 11 17 15 13"></polyline></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Documentos</div>
             </a>
             <?php endif; ?>
 
             <!-- 9. VENCIMIENTOS -->
+<<<<<<< HEAD
             <?php if (tienePermiso('documentos', 'ver')): ?>
             <a href="views/documentos/documentos_por_vencer.php" class="launcher-tile">
                 <div class="tile-icon">⚠️</div>
+=======
+            <a href="vista/documentos/documentos_por_vencer.php" class="launcher-tile">
+                <div class="tile-icon-wrapper warning">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Vencimientos</div>
             </a>
             <?php endif; ?>
 
             <!-- 10. FISCALIZACIÓN -->
+<<<<<<< HEAD
             <?php if (tienePermiso('fiscalizacion', 'ver')): ?>
             <a href="views/fiscalizacion/listar_infracciones.php" class="launcher-tile">
                 <div class="tile-icon">👮</div>
+=======
+            <a href="vista/fiscalizacion/listar_infracciones.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Fiscalización</div>
             </a>
             <?php endif; ?>
 
             <!-- 11. MULTAS PENDIENTES -->
+<<<<<<< HEAD
             <?php if (tienePermiso('fiscalizacion', 'ver')): ?>
             <a href="views/fiscalizacion/infracciones_pendientes.php" class="launcher-tile">
                 <div class="tile-icon">💰</div>
+=======
+            <a href="vista/fiscalizacion/infracciones_pendientes.php" class="launcher-tile">
+                <div class="tile-icon-wrapper warning">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="12" y1="14" x2="12" y2="18"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Multas Pendientes</div>
             </a>
             <?php endif; ?>
 
             <!-- 12. HISTORIAL PLACA -->
+<<<<<<< HEAD
             <?php if (tienePermiso('fiscalizacion', 'ver') || tienePermiso('vehiculos', 'ver')): ?>
             <a href="views/fiscalizacion/historial_vehiculo.php" class="launcher-tile">
                 <div class="tile-icon">🔍</div>
+=======
+            <a href="vista/fiscalizacion/historial_vehiculo.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Historial Placa</div>
             </a>
             <?php endif; ?>
 
             <!-- 13. HISTORIAL CHOFER -->
+<<<<<<< HEAD
             <?php if (tienePermiso('conductores', 'ver')): ?>
             <a href="views/fiscalizacion/historial_conductor.php" class="launcher-tile">
                 <div class="tile-icon">📋</div>
+=======
+            <a href="vista/fiscalizacion/historial_conductor.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Historial Chofer</div>
             </a>
             <?php endif; ?>
 
             <!-- 14. REGISTRO VEHÍCULO -->
+<<<<<<< HEAD
             <?php if (tienePermiso('vehiculos', 'crear')): ?>
             <a href="views/vehiculos/registrar_vehiculo.php" class="launcher-tile">
                 <div class="tile-icon">➕</div>
+=======
+            <a href="vista/vehiculos/registrar_vehiculo.php" class="launcher-tile">
+                <div class="tile-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                </div>
+>>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425
                 <div class="tile-label">Nuevo Vehículo</div>
             </a>
             <?php endif; ?>
 
             <!-- 15. CERRAR SESIÓN -->
-            <a href="controllers/auth/logout_controlador.php" class="launcher-tile" style="border-color: #fca5a5;">
-                <div class="tile-icon" style="color: #ef4444;">🚪</div>
+            <a href="controlador/auth/logout_controlador.php" class="launcher-tile" style="border-color: #fca5a5;">
+                <div class="tile-icon-wrapper danger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </div>
                 <div class="tile-label" style="color: #b91c1c;">Cerrar Sesión</div>
             </a>
 
