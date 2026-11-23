@@ -41,11 +41,11 @@ $documentos = $docMod->listarTodos();
                     <th>Placa</th>
                     <th>Tipo Documento</th>
                     <th>N° Documento</th>
+                    <th>Remitente</th>
                     <th>Entidad Emisora</th>
-                    <th>Emisión</th>
                     <th>Vencimiento</th>
-                    <th>Días Restantes</th>
                     <th>Estado</th>
+                    <th>Archivo</th>
                     <th style="text-align: right;">Acciones</th>
                 </tr>
             </thead>
@@ -66,16 +66,40 @@ $documentos = $docMod->listarTodos();
                     } else {
                         $textoEstado = 'VIGENTE (' . $dias . ' d)';
                     }
+                    $tieneArchivo = !empty($d['archivo_digital']) && file_exists(ROOT_PATH . 'subidas/documentos/' . $d['archivo_digital']);
+                    $archivoUrl = $tieneArchivo ? subidaUrl('documentos/' . $d['archivo_digital']) : '';
+                    $esImagen = $tieneArchivo && preg_match('/\.(jpg|jpeg|png|webp)$/i', $d['archivo_digital']);
                 ?>
                 <tr>
                     <td><strong><?= htmlspecialchars($d['placa']) ?></strong></td>
                     <td><span class="badge badge-info"><?= htmlspecialchars($d['tipo_documento']) ?></span></td>
                     <td><?= htmlspecialchars($d['numero_documento']) ?></td>
+                    <td>
+                        <?php if (!empty($d['remitente_nombre'])): ?>
+                            <span class="badge" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px;">
+                                <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <?= htmlspecialchars($d['remitente_nombre']) ?>
+                            </span>
+                        <?php else: ?>
+                            <span style="color: #64748b; font-size: 0.8rem;">Oficina / Admin</span>
+                        <?php endif; ?>
+                    </td>
                     <td><?= htmlspecialchars($d['entidad_emisora'] ?? '-') ?></td>
-                    <td><?= htmlspecialchars($d['fecha_emision']) ?></td>
-                    <td><strong><?= htmlspecialchars($d['fecha_vencimiento']) ?></strong></td>
+                    <td><strong><?= htmlspecialchars(date('d/m/Y', strtotime($d['fecha_vencimiento']))) ?></strong></td>
                     <td><span class="badge <?= $badgeClass ?>"><?= $textoEstado ?></span></td>
-                    <td><span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($d['estado']) ?></span></td>
+                    <td>
+                        <?php if ($tieneArchivo): ?>
+                            <?php if ($esImagen): ?>
+                                <a href="<?= $archivoUrl ?>" target="_blank" title="Ver foto">
+                                    <img src="<?= $archivoUrl ?>" alt="Doc" style="width: 32px; height: 32px; object-fit: cover; border-radius: 4px; border: 1px solid #334155; vertical-align: middle;">
+                                </a>
+                            <?php else: ?>
+                                <a href="<?= $archivoUrl ?>" target="_blank" class="btn btn-outline btn-sm" style="padding: 2px 6px; font-size: 0.75rem;">PDF</a>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <span style="color: #64748b; font-size: 0.75rem;">-</span>
+                        <?php endif; ?>
+                    </td>
                     <td style="text-align: right;">
                         <a href="<?= vistaUrl('documentos/ver_documento.php?id=' . $d['id_documento']) ?>" class="btn btn-outline btn-sm">Ver</a>
                         <a href="<?= controladorUrl('documento_controlador.php?accion=eliminar&id=' . $d['id_documento']) ?>" class="btn btn-danger btn-sm btn-confirmar-eliminar">Eliminar</a>

@@ -1,6 +1,16 @@
 <?php
-$tituloPagina = 'Panel Operativo - Personal';
-$subtituloNavbar = 'Módulo Administrativo';
+require_once dirname(dirname(__DIR__)) . '/configuracion/constantes.php';
+require_once dirname(dirname(__DIR__)) . '/configuracion/session.php';
+require_once dirname(dirname(__DIR__)) . '/ayudantes/funciones.php';
+
+$usuarioSesion = obtenerUsuarioActual();
+if ($usuarioSesion && (int)($usuarioSesion['rol_id'] ?? 0) === ROL_TAXISTAS) {
+    header('Location: ' . vistaUrl('taxista/dashboard.php'));
+    exit;
+}
+
+$tituloPagina = 'Panel Operativo - Analista';
+$subtituloNavbar = 'Módulo Operativo';
 $menuActivo = 'dashboard';
 
 require_once dirname(__DIR__) . '/plantillas/header.php';
@@ -10,7 +20,7 @@ require_once dirname(__DIR__) . '/plantillas/navbar.php';
 
 <div class="page-header">
     <div>
-        <h1 class="page-title">Panel Operativo del Personal</h1>
+        <h1 class="page-title">Panel Operativo de Analista</h1>
         <p class="page-subtitle">Gestión diaria de registros de mototaxis, choferes y documentación</p>
     </div>
 </div>

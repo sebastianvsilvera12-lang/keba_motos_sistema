@@ -115,6 +115,11 @@ CREATE TABLE `vehiculos` (
   `id_propietario` INT NOT NULL,
   `id_asociacion` INT NULL,
   `foto` VARCHAR(255) NULL,
+  `es_empresa` TINYINT(1) DEFAULT 1,
+  `fecha_proxima_revision` DATE NULL,
+  `estado_limpieza` ENUM('Excelente', 'Limpia', 'Regular', 'Requiere Lavado') DEFAULT 'Limpia',
+  `estado_mecanico` ENUM('Operativo', 'Con Observaciones', 'En Mantenimiento', 'Taller') DEFAULT 'Operativo',
+  `observaciones_danos` TEXT NULL,
   `estado` ENUM('Activo', 'Inactivo', 'De Baja', 'Observado') DEFAULT 'Activo',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -147,7 +152,9 @@ DROP TABLE IF EXISTS `documentos_vehiculo`;
 CREATE TABLE `documentos_vehiculo` (
   `id_documento` INT AUTO_INCREMENT PRIMARY KEY,
   `id_vehiculo` INT NOT NULL,
-  `tipo_documento` ENUM('SOAT', 'Tarjeta de Propiedad', 'Tarjeta de Circulacion', 'Revision Tecnica', 'Seguro Municipal', 'Otro') NOT NULL,
+  `id_usuario` INT NULL,
+  `remitente_nombre` VARCHAR(150) NULL,
+  `tipo_documento` ENUM('SOAT', 'Tarjeta de Propiedad', 'Tarjeta de Circulacion', 'Licencia de Conducir', 'Revision Tecnica', 'Seguro Municipal', 'Otro') NOT NULL,
   `numero_documento` VARCHAR(50) NOT NULL,
   `entidad_emisora` VARCHAR(100) NULL,
   `fecha_emision` DATE NOT NULL,
@@ -215,6 +222,143 @@ CREATE TABLE `auditoria` (
   CONSTRAINT `fk_auditoria_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- -------------------------------------------------------------
+-- 12. TABLA: asistencia (Control de asistencia de taxistas)
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS `asistencia`;
+CREATE TABLE `asistencia` (
+  `id_asistencia` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` INT NOT NULL,
+  `id_conductor` INT NULL,
+  `id_vehiculo` INT NULL,
+  `fecha` DATE NOT NULL,
+  `hora_ingreso` TIME NOT NULL,
+  `hora_salida` TIME NULL,
+  `turno` ENUM('Mañana', 'Tarde', 'Noche', 'Completo') DEFAULT 'Mañana',
+  `estado` ENUM('En Turno', 'Finalizado') DEFAULT 'En Turno',
+  `kilometraje_inicial` INT NULL,
+  `kilometraje_final` INT NULL,
+  `observaciones` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_asistencia_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `fk_asistencia_conductor` FOREIGN KEY (`id_conductor`) REFERENCES `conductores` (`id_conductor`) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT `fk_asistencia_vehiculo` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculo`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 13. TABLA: reportes_vehiculo (Novedades, daños, limpieza y revisión de motos de la empresa)
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS `reportes_vehiculo`;
+CREATE TABLE `reportes_vehiculo` (
+  `id_reporte` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_vehiculo` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  `id_conductor` INT NULL,
+  `tipo_asunto` ENUM('Daños y Desperfectos', 'Programación de Revisión', 'Estado de Limpieza', 'Mantenimiento General', 'Otro') NOT NULL,
+  `descripcion_danos` TEXT NOT NULL,
+  `estado_limpieza` ENUM('Excelente / Limpia', 'Regular / Aceptable', 'Requiere Lavado Urgente') DEFAULT 'Regular / Aceptable',
+  `fecha_revision_sugerida` DATE NULL,
+  `prioridad` ENUM('Baja', 'Normal', 'Alta', 'Urgente') DEFAULT 'Normal',
+  `foto_evidencia` VARCHAR(255) NULL,
+  `estado` ENUM('Pendiente', 'En Revisión', 'Atendido', 'Resuelto') DEFAULT 'Pendiente',
+  `respuesta_admin` TEXT NULL,
+  `id_usuario_admin` INT NULL,
+  `fecha_respuesta` DATETIME NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_repveh_vehiculo` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculo`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `fk_repveh_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `fk_repveh_conductor` FOREIGN KEY (`id_conductor`) REFERENCES `conductores` (`id_conductor`) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT `fk_repveh_admin` FOREIGN KEY (`id_usuario_admin`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 14. TABLA: cuotas_mensuales (Pago exclusivo por Yape de taxistas)
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS `cuotas_mensuales`;
+CREATE TABLE `cuotas_mensuales` (
+  `id_cuota` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` INT NOT NULL,
+  `id_conductor` INT NULL,
+  `id_vehiculo` INT NULL,
+  `remitente_nombre` VARCHAR(150) NOT NULL,
+  `mes_periodo` VARCHAR(50) NOT NULL,
+  `monto` DECIMAL(10,2) NOT NULL DEFAULT 30.00,
+  `metodo_pago` VARCHAR(50) NOT NULL DEFAULT 'Yape',
+  `numero_operacion` VARCHAR(50) NULL,
+  `comprobante_img` VARCHAR(255) NULL,
+  `comprobante_blob` LONGBLOB NULL,
+  `comprobante_mime` VARCHAR(50) DEFAULT 'image/jpeg',
+  `estado` ENUM('Pendiente', 'Aprobado', 'Rechazado') DEFAULT 'Pendiente',
+  `observaciones` TEXT NULL,
+  `respuesta_admin` TEXT NULL,
+  `id_admin_valida` INT NULL,
+  `fecha_validacion` DATETIME NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_cuotas_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `fk_cuotas_vehiculo` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculo`) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT `fk_cuotas_conductor` FOREIGN KEY (`id_conductor`) REFERENCES `conductores` (`id_conductor`) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT `fk_cuotas_admin` FOREIGN KEY (`id_admin_valida`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 15. TABLA: clientes (Clientes y Compradores de Motos / Repuestos)
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS `clientes`;
+CREATE TABLE `clientes` (
+  `id_cliente` INT AUTO_INCREMENT PRIMARY KEY,
+  `tipo_documento` ENUM('DNI', 'RUC', 'Carnet Extranjeria', 'Pasaporte') DEFAULT 'DNI',
+  `numero_documento` VARCHAR(20) NOT NULL UNIQUE,
+  `nombres` VARCHAR(100) NOT NULL,
+  `apellidos` VARCHAR(100) NULL,
+  `telefono` VARCHAR(20) NULL,
+  `telefono_alternativo` VARCHAR(20) NULL,
+  `email` VARCHAR(100) NULL,
+  `direccion` VARCHAR(255) NULL,
+  `ciudad` VARCHAR(100) DEFAULT 'Pisco',
+  `tipo_cliente` ENUM('Natural', 'Jurídico') DEFAULT 'Natural',
+  `estado` ENUM('Activo', 'Inactivo', 'Bloqueado') DEFAULT 'Activo',
+  `observaciones` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 16. TABLA: viajes (Solicitudes de Viajes estilo Uber)
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS `viajes`;
+CREATE TABLE `viajes` (
+  `id_viaje` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_cliente` INT NULL,
+  `id_usuario` INT NULL,
+  `id_conductor` INT NULL,
+  `id_vehiculo` INT NULL,
+  `origen` VARCHAR(255) NOT NULL,
+  `lat_origen` DECIMAL(10, 7) NULL,
+  `lng_origen` DECIMAL(10, 7) NULL,
+  `destino` VARCHAR(255) NOT NULL,
+  `lat_destino` DECIMAL(10, 7) NULL,
+  `lng_destino` DECIMAL(10, 7) NULL,
+  `tipo_servicio` ENUM('Keba Estándar', 'Keba Express', 'Keba Carga') DEFAULT 'Keba Estándar',
+  `precio_estimado` DECIMAL(10,2) NOT NULL DEFAULT 4.00,
+  `precio_final` DECIMAL(10,2) NULL,
+  `metodo_pago` ENUM('Efectivo', 'Yape', 'Plin', 'Tarjeta') DEFAULT 'Efectivo',
+  `distancia_km` DECIMAL(5,2) DEFAULT 2.50,
+  `tiempo_minutos` INT DEFAULT 8,
+  `estado` ENUM('Solicitado', 'Asignado', 'En Curso', 'Completado', 'Cancelado') DEFAULT 'Solicitado',
+  `codigo_pin` VARCHAR(4) DEFAULT '1234',
+  `calificacion` INT NULL,
+  `comentario_calificacion` TEXT NULL,
+  `fecha_solicitud` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `fecha_finalizacion` DATETIME NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_viajes_conductor` FOREIGN KEY (`id_conductor`) REFERENCES `conductores` (`id_conductor`) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT `fk_viajes_vehiculo` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculo`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -226,18 +370,19 @@ SET FOREIGN_KEY_CHECKS = 1;
 INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
 (1, 'Administrador', 'Control total de usuarios, configuraciones y módulos'),
 (2, 'Analista', 'Gestión y análisis operativo de mototaxis, conductores y actas'),
-(3, 'Conductores', 'Acceso exclusivo de consulta para el padrón de conductores y licencias');
+(3, 'Taxistas', 'Acceso para taxistas y consulta de unidades, licencias y documentos'),
+(4, 'Clientes', 'Portal de clientes para solicitar viajes y mototaxis');
 
 -- 2. Usuarios Principales del Sistema
 -- Usuario 1: Sebastian alfredo Vargas silvera (sebastian)
 -- Usuario 2: Administrador General (admin)
--- Usuario 3: Analista (personal)
--- Usuario 4: Conductores (consulta)
+-- Usuario 3: Analista (analista)
+-- Usuario 4: Taxista (taxista)
 INSERT INTO `usuarios` (`id_usuario`, `id_rol`, `dni`, `nombres`, `apellidos`, `usuario`, `password`, `email`, `telefono`, `estado`) VALUES
 (1, 1, '61205626', 'Sebastian alfredo', 'Vargas silvera', 'sebastian', '$2y$12$AI04WyBqxUNrTxxSfpQKhuAS5.FyApLLfFShNujUpXyXtxdLEU3qe', 'sebastian@kebamotos.pe', '984512301', 'Activo'),
 (2, 1, '70001122', 'Administrador', 'KEBA MOTOS', 'admin', '$2y$12$PM6OYDugwuPdMN9m34fWN.XOPwZJsxiMT4V3uZsey2PMRsGJqeZfy', 'admin@kebamotos.pe', '987654321', 'Activo'),
-(3, 2, '71223344', 'Carlos', 'Mendoza Quispe', 'personal', '$2y$12$PM6OYDugwuPdMN9m34fWN.XOPwZJsxiMT4V3uZsey2PMRsGJqeZfy', 'personal@kebamotos.pe', '912345678', 'Activo'),
-(4, 3, '73445566', 'Inspector', 'Fiscalización', 'consulta', '$2y$12$PM6OYDugwuPdMN9m34fWN.XOPwZJsxiMT4V3uZsey2PMRsGJqeZfy', 'consulta@kebamotos.pe', '923456789', 'Activo');
+(3, 2, '71223344', 'Carlos', 'Mendoza Quispe', 'analista', '$2y$12$PM6OYDugwuPdMN9m34fWN.XOPwZJsxiMT4V3uZsey2PMRsGJqeZfy', 'analista@kebamotos.pe', '912345678', 'Activo'),
+(4, 3, '73445566', 'Conductor', 'Taxista Municipal', 'taxista', '$2y$12$PM6OYDugwuPdMN9m34fWN.XOPwZJsxiMT4V3uZsey2PMRsGJqeZfy', 'taxista@kebamotos.pe', '923456789', 'Activo');
 
 -- 3. Catálogo de Infracciones de Mototaxis (Ordenanza Municipal)
 INSERT INTO `tipos_infraccion` (`codigo`, `descripcion`, `gravedad`, `monto_sancion`, `medida_preventiva`, `estado`) VALUES
@@ -264,9 +409,9 @@ INSERT INTO `conductores` (`id_conductor`, `dni`, `nombres`, `apellidos`, `fecha
 (2, '75896321', 'Jorge David', 'Vargas Huamán', '1998-08-25', '965823147', 'Av. Grau 145', 'Q-75896321', 'B-IIc', '2022-07-15', '2027-07-15', 'Habilitado');
 
 -- 7. Mototaxis Empadronadas
-INSERT INTO `vehiculos` (`id_vehiculo`, `placa`, `numero_padron`, `marca`, `modelo`, `color`, `anio_fabricacion`, `numero_motor`, `numero_chasis`, `id_propietario`, `id_asociacion`, `estado`) VALUES
-(1, '1234-5B', 'PAD-010', 'Bajaj', 'RE 205', 'Azul con Negro', 2021, 'BJ205-985412', 'CHAS-9874561230', 1, 1, 'Activo'),
-(2, '5678-3A', 'PAD-025', 'TVS', 'King Deluxe', 'Azul y Blanco', 2022, 'TVS-451298', 'CHAS-1245896325', 2, 2, 'Activo');
+INSERT INTO `vehiculos` (`id_vehiculo`, `placa`, `numero_padron`, `marca`, `modelo`, `color`, `anio_fabricacion`, `numero_motor`, `numero_chasis`, `id_propietario`, `id_asociacion`, `es_empresa`, `fecha_proxima_revision`, `estado_limpieza`, `estado_mecanico`, `estado`) VALUES
+(1, '1234-5B', 'PAD-010', 'Bajaj', 'RE 205', 'Azul con Negro', 2021, 'BJ205-985412', 'CHAS-9874561230', 1, 1, 1, '2026-12-15', 'Limpia', 'Operativo', 'Activo'),
+(2, '5678-3A', 'PAD-025', 'TVS', 'King Deluxe', 'Azul y Blanco', 2022, 'TVS-451298', 'CHAS-1245896325', 2, 2, 1, '2026-11-30', 'Regular', 'Operativo', 'Activo');
 
 -- 8. Documentos Vehiculares (SOAT, TUC)
 INSERT INTO `documentos_vehiculo` (`id_documento`, `id_vehiculo`, `tipo_documento`, `numero_documento`, `entidad_emisora`, `fecha_emision`, `fecha_vencimiento`, `estado`) VALUES
@@ -278,3 +423,7 @@ INSERT INTO `documentos_vehiculo` (`id_documento`, `id_vehiculo`, `tipo_document
 INSERT INTO `vehiculo_conductor` (`id_asignacion`, `id_vehiculo`, `id_conductor`, `fecha_asignacion`, `es_principal`, `estado`) VALUES
 (1, 1, 1, '2025-01-10', 1, 'Activo'),
 (2, 2, 2, '2025-02-01', 1, 'Activo');
+
+-- 10. Reportes de Estado, Daños y Revisión de Unidades de la Empresa
+INSERT INTO `reportes_vehiculo` (`id_reporte`, `id_vehiculo`, `id_usuario`, `id_conductor`, `tipo_asunto`, `descripcion_danos`, `estado_limpieza`, `fecha_revision_sugerida`, `prioridad`, `estado`, `respuesta_admin`, `id_usuario_admin`, `fecha_respuesta`) VALUES
+(1, 1, 4, 1, 'Daños y Desperfectos', 'Presenta leve holgura en el cable de embrague y raspón superficial en el tapabarro delantero derecho.', 'Regular / Aceptable', '2026-11-25', 'Normal', 'Atendido', 'Se autorizó el pase a taller para calibración de embrague este jueves a las 09:00 AM.', 1, '2026-11-19 10:30:00');

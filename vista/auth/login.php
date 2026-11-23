@@ -16,9 +16,11 @@ require_once dirname(dirname(__DIR__)) . '/ayudantes/funciones.php';
 
 <div class="login-card">
     <div class="login-header">
-        <img src="<?= asset('img/logo_keba.png') ?>" alt="KEBA MOTOS" style="width: 100%; max-height: 85px; object-fit: contain; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 16px;">
+            <img src="<?= asset('img/logo_keba.png') ?>" alt="KEBA" style="max-height: 54px; width: auto; max-width: 250px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+        </div>
         <h1 class="login-title">Control y <span>Fiscalización</span></h1>
-        <p class="login-subtitle">Sistema Integrado de Gestión de Mototaxis</p>
+        <p class="login-subtitle">Sistema Integrado de Gestión y Transporte</p>
     </div>
 
     <?php include_once dirname(__DIR__) . '/plantillas/mensajes.php'; ?>
@@ -37,14 +39,18 @@ require_once dirname(dirname(__DIR__)) . '/ayudantes/funciones.php';
         <button type="submit" class="login-btn">Ingresar al Sistema</button>
     </form>
 
-    <div class="login-footer">
+    <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid #e2e8f0; text-align: center;">
+        <span style="display: block; font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">
+            ¿Eres pasajero o cliente y no tienes cuenta?
+        </span>
+        <a href="<?= vistaUrl('auth/registro.php') ?>" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; box-sizing: border-box; padding: 11px 16px; background: #eff6ff; color: #1d4ed8; border: 1.5px solid #bfdbfe; border-radius: 8px; font-weight: 700; font-size: 0.92rem; text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+            <span>Regístrate aquí (Solo Clientes)</span>
+        </a>
+    </div>
+
+    <div class="login-footer" style="margin-top: 16px;">
         <a href="<?= vistaUrl('auth/recuperar.php') ?>">¿Olvidaste tu contraseña?</a>
-<<<<<<< HEAD:views/auth/login.php
-=======
-        <div style="margin-top: 15px; font-size: 0.8rem; color: #94a3b8;">
-            Credenciales: DNI <strong>61205626</strong> (clave: <strong>kirishima12</strong>) o <strong>admin</strong> (clave: <strong>admin123</strong>)
-        </div>
->>>>>>> 8a81eeefcb295ded20290b257e8e9015f31e9425:vista/auth/login.php
     </div>
 </div>
 

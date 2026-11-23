@@ -46,12 +46,21 @@ $usuarios = $userMod->listarTodos();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($usuarios as $u): ?>
+                <?php foreach ($usuarios as $u): 
+                    $badgeRol = 'badge-dark';
+                    if ($u['id_rol'] == 1) {
+                        $badgeRol = 'badge-danger';
+                    } elseif ($u['id_rol'] == 2) {
+                        $badgeRol = 'badge-info';
+                    } elseif ($u['id_rol'] == 3) {
+                        $badgeRol = 'badge-warning';
+                    }
+                ?>
                 <tr>
                     <td><strong><?= htmlspecialchars($u['usuario']) ?></strong></td>
                     <td><?= htmlspecialchars($u['nombres'] . ' ' . $u['apellidos']) ?></td>
                     <td><?= htmlspecialchars($u['dni']) ?></td>
-                    <td><span class="badge badge-info"><?= htmlspecialchars($u['nombre_rol']) ?></span></td>
+                    <td><span class="badge <?= $badgeRol ?>"><?= htmlspecialchars($u['nombre_rol']) ?></span></td>
                     <td><?= htmlspecialchars($u['email'] ?? '-') ?></td>
                     <td><?= htmlspecialchars($u['ultimo_login'] ?? 'Nunca') ?></td>
                     <td><span class="badge badge-success"><?= htmlspecialchars($u['estado']) ?></span></td>

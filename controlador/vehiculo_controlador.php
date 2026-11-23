@@ -25,6 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             setFlash('danger', 'Error al actualizar el vehículo.');
         }
+    } elseif ($accion === 'responder_reporte_taxista') {
+        require_once dirname(__DIR__) . '/modelos/ReporteVehiculo.php';
+        $repMod = new ReporteVehiculo();
+        $idReporte = (int)$_POST['id_reporte'];
+        $respuesta = trim($_POST['respuesta_admin'] ?? '');
+        $nuevoEstado = $_POST['estado'] ?? 'Atendido';
+        $fechaRevision = !empty($_POST['fecha_proxima_revision']) ? $_POST['fecha_proxima_revision'] : null;
+        $estadoMecanico = !empty($_POST['estado_mecanico']) ? $_POST['estado_mecanico'] : null;
+
+        $userActual = obtenerUsuarioActual();
+        $idAdmin = (int)($userActual['id'] ?? 1);
+
+        if ($repMod->responderReporte($idReporte, $idAdmin, $respuesta, $nuevoEstado, $fechaRevision, $estadoMecanico)) {
+            setFlash('success', '¡Respuesta enviada al taxista y estado de la unidad actualizado!');
+        } else {
+            setFlash('danger', 'Error al guardar la respuesta.');
+        }
+        redireccionar('vista/vehiculos/reportes_taxistas.php');
     }
     redireccionar('vista/vehiculos/listar_vehiculos.php');
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && $accion === 'eliminar') {

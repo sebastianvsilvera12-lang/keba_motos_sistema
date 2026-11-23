@@ -1,6 +1,7 @@
 /keba_motos_sistema/
 │
 ├── 📄 index.php                    # Panel principal de enlaces (Launcher y Dashboard)
+├── 📄 estructura.txt               # Árbol y documentación de la estructura del sistema
 │
 ├── 📂 /configuracion/                    # ⚙️ Configuración del sistema
 │   ├── conexion.php               # Conexión PDO a MySQL
@@ -12,6 +13,7 @@
 ├── 📂 /assets/                    # 🎨 Recursos estáticos
 │   ├── 📂 /css/
 │   │   ├── estilos.css            # Estilos generales
+│   │   ├── cliente_uber.css       # Estilos del portal de clientes estilo Uber
 │   │   ├── login.css              # Estilos específicos del login
 │   │   ├── dashboard.css          # Estilos del panel principal
 │   │   ├── formularios.css        # Estilos de formularios
@@ -26,7 +28,12 @@
 │   │   └── bootstrap.bundle.min.js
 │   │
 │   ├── 📂 /img/
-│   │   ├── logo_keba.png          # Logo de KEBA MOTOS
+│   │   ├── logo_keba.png          # Logo de KEBA MOTOS (PNG)
+│   │   ├── logo_keba.jpg          # Logo de KEBA MOTOS (JPG)
+│   │   ├── logo_keba_sac.png      # Isotipo circular distintivo KEBA S.A.C.
+│   │   ├── yape_app.png           # Ícono oficial de la aplicación Yape
+│   │   ├── yape.svg               # Logo vectorizado de Yape
+│   │   ├── yape_icon.svg          # Ícono vectorizado de Yape
 │   │   ├── favicon.ico
 │   │   ├── icono_moto.png
 │   │   ├── icono_conductor.png
@@ -41,15 +48,22 @@
 │   ├── Vehiculo.php
 │   ├── Conductor.php
 │   ├── Propietario.php
+│   ├── Cliente.php                # Gestión y registro de clientes
 │   ├── Asociacion.php
 │   ├── Infraccion.php
 │   ├── Documento.php
-│   └── Reporte.php                # Consultas para generar reportes
+│   ├── Reporte.php                # Consultas para generar reportes
+│   ├── Asistencia.php             # Control y registro de asistencia
+│   ├── CuotaMensual.php           # Gestión de cuotas mensuales de taxistas
+│   ├── ReporteVehiculo.php        # Notificaciones y reportes de estado/daños
+│   ├── Taxista.php                # Consultas del portal de taxistas
+│   └── Viaje.php                  # Solicitud y seguimiento de viajes (Uber)
 │
 ├── 📂 /controlador/               # 🎮 Procesan formularios (POST/GET)
 │   ├── auth/
 │   │   ├── login_controlador.php
 │   │   ├── logout_controlador.php
+│   │   ├── registro_controlador.php   # Registro público de clientes/pasajeros
 │   │   └── registro_usuario.php
 │   ├── vehiculo_controlador.php
 │   ├── conductor_controlador.php
@@ -57,7 +71,9 @@
 │   ├── asociacion_controlador.php
 │   ├── infraccion_controlador.php
 │   ├── documento_controlador.php
-│   └── reporte_controlador.php
+│   ├── reporte_controlador.php
+│   ├── taxista_controlador.php    # Operaciones del portal taxista (asistencia, cuotas, reportes)
+│   └── cliente_controlador.php    # Operaciones de clientes (pedidos de viaje Uber)
 │
 ├── 📂 /intermediarios/                # 🔐 Seguridad y validación de roles
 │   ├── auth_middleware.php        # Verifica si hay sesión activa
@@ -68,6 +84,7 @@
 │   │
 │   ├── 📂 /auth/                  # Módulo de acceso y seguridad
 │   │   ├── login.php              # Formulario de inicio de sesión
+│   │   ├── registro.php           # Registro exclusivo para clientes / pasajeros
 │   │   ├── recuperar.php          # Recuperar contraseña
 │   │   └── cambiar_password.php
 │   │
@@ -81,7 +98,25 @@
 │   │   ├── registrar_vehiculo.php # Formulario de nuevo vehículo
 │   │   ├── editar_vehiculo.php    # Formulario de edición
 │   │   ├── ver_vehiculo.php       # Vista detallada de un vehículo
-│   │   └── eliminar_vehiculo.php  # Confirmación de baja
+│   │   ├── eliminar_vehiculo.php  # Confirmación de baja
+│   │   ├── asistencias_taxistas.php # Control de asistencias y uso de mototaxis (Admin)
+│   │   ├── cuotas_taxistas.php    # Control administrativo de cuotas de taxistas
+│   │   └── reportes_taxistas.php  # Reportes e incidencias enviadas por taxistas
+│   │
+│   ├── 📂 /cliente/               # 🚖 Portal de Clientes (Estilo Uber)
+│   │   ├── index.php              # Solicitud de mototaxi y mapa interactivo
+│   │   ├── mis_viajes.php         # Historial y estadísticas de viajes
+│   │   └── perfil.php             # Perfil del cliente y lugares frecuentes
+│   │
+│   ├── 📂 /taxista/               # 🛵 Portal del Conductor / Taxista
+│   │   ├── dashboard.php          # Panel principal del taxista
+│   │   ├── perfil.php             # Datos personales y del vehículo asignado
+│   │   ├── cuotas.php             # Pago y seguimiento de cuotas mensuales (Yape)
+│   │   ├── asistencia.php         # Marcación y registro diario de asistencia
+│   │   ├── viajes.php             # Solicitudes de pasajeros Keba Ride (Origen, Destino y Teléfono)
+│   │   ├── documentos.php         # Gestión documental diferenciada: Moto Empresa (Licencia) vs Moto Propia (SOAT, Licencia, TIV)
+│   │   ├── reportar_estado.php    # Notificar daños, averías o estado del vehículo
+│   │   └── fotos.php              # Galería e inspección fotográfica del mototaxi
 │   │
 │   ├── 📂 /conductores/           # Módulo de conductores
 │   │   ├── listar_conductores.php
@@ -136,7 +171,9 @@
 ├── 📂 /subidas/                   # 📎 Archivos subidos (documentos escaneados)
 │   ├── /documentos/               # SOAT, licencias, tarjetas escaneadas
 │   ├── /fotos_vehiculos/          # Fotos de los mototaxis
-│   └── /fotos_conductores/        # Fotos de conductores
+│   ├── /fotos_conductores/        # Fotos de conductores
+│   ├── /fotos_danos/              # Fotos de daños y reportes de averías
+│   └── /cuotas_yape/              # Capturas y comprobantes de pagos por Yape
 │
 ├── 📂 /reportes_pdf/              # 📄 Generación de PDFs
 │   ├── generar_pdf.php
@@ -154,4 +191,5 @@
 └── 📂 /docs/                      # 📚 Documentación
     ├── manual_usuario.pdf
     ├── manual_tecnico.pdf
-    └── diagrama_bd.png
+    ├── diagrama_bd.png
+    └── estructura_base_datos.md   # Diccionario de datos y estructura de la BD

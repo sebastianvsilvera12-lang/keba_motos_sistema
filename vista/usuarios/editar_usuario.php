@@ -52,7 +52,7 @@ if (!$u) {
                     <?php else: ?>
                         <option value="1" <?= $u['id_rol'] == 1 ? 'selected' : '' ?>>Administrador</option>
                         <option value="2" <?= $u['id_rol'] == 2 ? 'selected' : '' ?>>Analista</option>
-                        <option value="3" <?= $u['id_rol'] == 3 ? 'selected' : '' ?>>Conductores</option>
+                        <option value="3" <?= $u['id_rol'] == 3 ? 'selected' : '' ?>>Taxistas</option>
                     <?php endif; ?>
                 </select>
             </div>

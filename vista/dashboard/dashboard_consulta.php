@@ -1,30 +1,8 @@
 <?php
-$tituloPagina = 'Panel de Fiscalización y Consulta';
-$subtituloNavbar = 'Verificación Rápida';
-$menuActivo = 'dashboard';
+require_once dirname(dirname(__DIR__)) . '/configuracion/constantes.php';
+require_once dirname(dirname(__DIR__)) . '/configuracion/session.php';
+require_once dirname(dirname(__DIR__)) . '/ayudantes/funciones.php';
 
-require_once dirname(__DIR__) . '/plantillas/header.php';
-require_once dirname(__DIR__) . '/plantillas/sidebar.php';
-require_once dirname(__DIR__) . '/plantillas/navbar.php';
-?>
-
-<div class="page-header">
-    <div>
-        <h1 class="page-title">Módulo de Consulta Rápida</h1>
-        <p class="page-subtitle">Verificación de placas, antecedentes y licencias en operativos de campo</p>
-    </div>
-</div>
-
-<div class="card" style="max-width: 600px; margin: 0 auto 30px auto;">
-    <h2 class="card-title" style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-        <svg style="width: 20px; height: 20px; color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        Búsqueda Rápida de Placa o DNI
-    </h2>
-    <form action="<?= vistaUrl('fiscalizacion/historial_vehiculo.php') ?>" method="GET" class="d-flex" style="gap: 10px;">
-        <input type="text" name="placa" class="form-control" placeholder="Ingresa placa (ej: 1234-5B) o DNI..." required>
-        <button type="submit" class="btn btn-primary">Consultar</button>
-    </form>
-</div>
-
-<?php require_once dirname(__DIR__) . '/plantillas/footer.php'; ?>
+header('Location: ' . vistaUrl('taxista/dashboard.php'));
+exit;
 

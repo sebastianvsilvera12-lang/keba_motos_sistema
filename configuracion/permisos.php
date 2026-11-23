@@ -17,10 +17,11 @@ $permisos_rol = [
         'documentos' => ['ver', 'crear', 'editar', 'eliminar'],
         'fiscalizacion' => ['ver', 'crear', 'editar', 'anular', 'cobrar'],
         'reportes' => ['ver', 'exportar_pdf', 'exportar_excel'],
-        'usuarios' => ['ver', 'crear', 'editar', 'eliminar']
+        'usuarios' => ['ver', 'crear', 'editar', 'eliminar'],
+        'clientes' => ['ver', 'crear', 'editar', 'eliminar']
     ],
     ROL_ANALISTA => [
-        'dashboard' => ['ver', 'personal'],
+        'dashboard' => ['ver', 'personal', 'analista'],
         'vehiculos' => ['ver', 'crear', 'editar'],
         'conductores' => ['ver', 'crear', 'editar'],
         'propietarios' => ['ver', 'crear', 'editar'],
@@ -28,12 +29,27 @@ $permisos_rol = [
         'documentos' => ['ver', 'crear', 'editar'],
         'fiscalizacion' => ['ver', 'crear', 'cobrar'],
         'reportes' => ['ver', 'exportar_pdf'],
+        'usuarios' => [],
+        'clientes' => ['ver', 'crear', 'editar']
+    ],
+    ROL_TAXISTAS => [
+        'dashboard' => ['ver', 'taxista'],
+        'taxista' => ['ver', 'asistencia', 'documentos', 'fotos', 'cuotas'],
+        'vehiculos' => [],
+        'conductores' => [],
+        'propietarios' => [],
+        'asociaciones' => [],
+        'documentos' => ['ver'],
+        'fiscalizacion' => ['consulta'],
+        'reportes' => [],
         'usuarios' => []
     ],
-    ROL_CONSULTA => [
-        'dashboard' => ['ver', 'consulta'],
+    ROL_CLIENTES => [
+        'dashboard' => ['ver', 'cliente'],
+        'cliente' => ['ver', 'pedir_viaje', 'mis_viajes', 'perfil'],
+        'viajes' => ['ver', 'crear', 'cancelar', 'calificar'],
         'vehiculos' => [],
-        'conductores' => ['ver'],
+        'conductores' => [],
         'propietarios' => [],
         'asociaciones' => [],
         'documentos' => [],
@@ -60,7 +76,11 @@ function requerirRol($rolesPermitidos = []) {
     $usuario = obtenerUsuarioActual();
     if (!$usuario || !in_array((int)$usuario['rol_id'], (array)$rolesPermitidos)) {
         setFlash('danger', 'Acceso denegado: No tienes permisos suficientes para realizar esta acción.');
-        header('Location: ' . BASE_URL . 'vista/dashboard/dashboard_admin.php');
+        $dest = BASE_URL . 'vista/dashboard/dashboard_admin.php';
+        if ($usuario && (int)$usuario['rol_id'] === ROL_TAXISTAS) {
+            $dest = BASE_URL . 'vista/taxista/dashboard.php';
+        }
+        header('Location: ' . $dest);
         exit;
     }
 }

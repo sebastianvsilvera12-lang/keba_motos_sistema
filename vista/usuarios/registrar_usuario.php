@@ -6,7 +6,7 @@ $menuActivo = 'usuarios';
 require_once dirname(__DIR__) . '/plantillas/header.php';
 require_once dirname(__DIR__) . '/plantillas/sidebar.php';
 require_once dirname(__DIR__) . '/plantillas/navbar.php';
-require_once dirname(dirname(__DIR__)) . '/config/conexion.php';
+require_once dirname(dirname(__DIR__)) . '/configuracion/conexion.php';
 
 try {
     $db = Database::conectar();
@@ -41,7 +41,7 @@ try {
                     <?php else: ?>
                         <option value="1">Administrador</option>
                         <option value="2" selected>Analista</option>
-                        <option value="3">Conductores</option>
+                        <option value="3">Taxistas</option>
                     <?php endif; ?>
                 </select>
             </div>

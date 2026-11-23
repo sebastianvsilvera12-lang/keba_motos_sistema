@@ -1,6 +1,16 @@
 <?php
+require_once dirname(dirname(__DIR__)) . '/configuracion/constantes.php';
+require_once dirname(dirname(__DIR__)) . '/configuracion/session.php';
+require_once dirname(dirname(__DIR__)) . '/ayudantes/funciones.php';
+
+$usuarioSesion = obtenerUsuarioActual();
+if ($usuarioSesion && (int)($usuarioSesion['rol_id'] ?? 0) === ROL_TAXISTAS) {
+    header('Location: ' . vistaUrl('taxista/dashboard.php'));
+    exit;
+}
+
 $tituloPagina = 'Panel Principal Administrador';
-$subtituloNavbar = 'Dashboard General';
+$subtituloNavbar = 'Panel General';
 $menuActivo = 'dashboard';
 
 require_once dirname(__DIR__) . '/plantillas/header.php';
@@ -11,19 +21,30 @@ require_once dirname(dirname(__DIR__)) . '/modelos/Vehiculo.php';
 require_once dirname(dirname(__DIR__)) . '/modelos/Conductor.php';
 require_once dirname(dirname(__DIR__)) . '/modelos/Infraccion.php';
 require_once dirname(dirname(__DIR__)) . '/modelos/Documento.php';
+require_once dirname(dirname(__DIR__)) . '/modelos/ReporteVehiculo.php';
+require_once dirname(dirname(__DIR__)) . '/modelos/CuotaMensual.php';
+require_once dirname(dirname(__DIR__)) . '/modelos/Asistencia.php';
 
 $vehiculoMod = new Vehiculo();
 $conductorMod = new Conductor();
 $infraccionMod = new Infraccion();
 $documentoMod = new Documento();
+$repMod = new ReporteVehiculo();
+$cuotaMod = new CuotaMensual();
+$asistenciaMod = new Asistencia();
 
 $totalVehiculos = $vehiculoMod->contarTotal();
 $totalConductores = $conductorMod->contarTotal();
 $infraccionesPendientes = $infraccionMod->contarPendientes();
 $docsPorVencer = $documentoMod->contarPorVencer(30);
+$reportesPendientesMotos = $repMod->contarPendientes();
+$cuotasYapePendientes = $cuotaMod->contarPendientes();
+$taxistasEnTurno = $asistenciaMod->contarEnTurnoHoy();
 
 $ultimosVehiculos = array_slice($vehiculoMod->listarTodos(), 0, 5);
 $ultimasInfracciones = array_slice($infraccionMod->listarTodos(), 0, 5);
+$ultimosReportesMotos = array_slice($repMod->listarTodos(), 0, 5);
+$ultimasCuotasYape = array_slice($cuotaMod->listarTodas(), 0, 5);
 ?>
 
 <div class="page-header">
@@ -82,6 +103,39 @@ $ultimasInfracciones = array_slice($infraccionMod->listarTodos(), 0, 5);
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         </div>
     </div>
+
+    <a href="<?= vistaUrl('vehiculos/reportes_taxistas.php') ?>" class="stat-card" style="text-decoration: none; color: inherit; border-color: <?= $reportesPendientesMotos > 0 ? '#f59e0b' : '#334155' ?>;">
+        <div class="stat-info">
+            <h3>Avisos de Taxistas</h3>
+            <div class="stat-number" style="color: <?= $reportesPendientesMotos > 0 ? '#f59e0b' : '#10b981' ?>;" data-target="<?= $reportesPendientesMotos ?>"><?= $reportesPendientesMotos ?></div>
+            <div class="stat-desc" style="color: #38bdf8;">Daños / Revisiones &rarr;</div>
+        </div>
+        <div class="stat-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </div>
+    </a>
+
+    <a href="<?= vistaUrl('vehiculos/cuotas_taxistas.php?estado=Pendiente') ?>" class="stat-card" style="text-decoration: none; color: inherit; border-color: <?= $cuotasYapePendientes > 0 ? '#871c99' : '#334155' ?>;">
+        <div class="stat-info">
+            <h3>Cuotas Yape</h3>
+            <div class="stat-number" style="color: <?= $cuotasYapePendientes > 0 ? '#871c99' : '#64748b' ?>;" data-target="<?= $cuotasYapePendientes ?>"><?= $cuotasYapePendientes ?></div>
+            <div class="stat-desc" style="color: #38bdf8;">Por validar en Yape &rarr;</div>
+        </div>
+        <div class="stat-icon" style="background: transparent; padding: 0; display: flex; align-items: center; justify-content: center;">
+            <img src="<?= asset('img/yape_app.png') ?>" alt="Yape" style="width: 44px; height: 44px; border-radius: 11px; box-shadow: 0 3px 8px rgba(116, 34, 132, 0.25);">
+        </div>
+    </a>
+
+    <a href="<?= vistaUrl('vehiculos/asistencias_taxistas.php') ?>" class="stat-card" style="text-decoration: none; color: inherit; border-color: <?= $taxistasEnTurno > 0 ? '#10b981' : '#334155' ?>;">
+        <div class="stat-info">
+            <h3>Motos en Ruta (Turnos)</h3>
+            <div class="stat-number" style="color: <?= $taxistasEnTurno > 0 ? '#10b981' : '#64748b' ?>;" data-target="<?= $taxistasEnTurno ?>"><?= $taxistasEnTurno ?></div>
+            <div class="stat-desc" style="color: #38bdf8;">Choferes en servicio &rarr;</div>
+        </div>
+        <div class="stat-icon green" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+    </a>
 </div>
 
 <!-- Cuadrícula de accesos y tablas recientes -->
@@ -153,6 +207,12 @@ $ultimasInfracciones = array_slice($infraccionMod->listarTodos(), 0, 5);
                     </div>
                     <span>Reporte General</span>
                 </a>
+                <a href="<?= vistaUrl('vehiculos/cuotas_taxistas.php') ?>" class="action-tile">
+                    <div class="tile-icon-wrapper" style="width: 40px; height: 40px; margin-bottom: 2px; padding: 0; background: transparent; display: flex; align-items: center; justify-content: center;">
+                        <img src="<?= asset('img/yape_app.png') ?>" alt="Yape" style="width: 36px; height: 36px; border-radius: 8px;">
+                    </div>
+                    <span>Cuotas Yape</span>
+                </a>
             </div>
         </div>
 
@@ -179,6 +239,83 @@ $ultimasInfracciones = array_slice($infraccionMod->listarTodos(), 0, 5);
                 <?php endif; ?>
             </ul>
         </div>
+    </div>
+</div>
+
+<!-- Cuotas Mensuales Yape Recientes -->
+<div class="card" style="margin-top: 25px;">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div>
+            <h2 class="card-title" style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span>
+                Últimos Comprobantes de Cuotas Mensuales (Yape)
+            </h2>
+            <p style="font-size: 0.82rem; color: #64748b; margin: 4px 0 0 0;">Capturas de Yape enviadas por los taxistas y guardadas en la base de datos</p>
+        </div>
+        <a href="<?= vistaUrl('vehiculos/cuotas_taxistas.php') ?>" class="btn btn-outline btn-sm">Ver Todas las Cuotas &rarr;</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Taxista / Remitente</th>
+                    <th>Período</th>
+                    <th>Monto</th>
+                    <th>Comprobante</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($ultimasCuotasYape)): ?>
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #64748b; padding: 24px;">No hay pagos de cuotas registrados aún.</td>
+                </tr>
+                <?php else: ?>
+                <?php foreach ($ultimasCuotasYape as $cu): ?>
+                <?php $srcImg = CuotaMensual::obtenerSrcComprobante($cu); ?>
+                <tr>
+                    <td style="font-size: 0.82rem; color: #64748b;">
+                        <?= date('d/m/Y H:i', strtotime($cu['created_at'])) ?>
+                    </td>
+                    <td>
+                        <strong style="color: #0f172a;"><?= htmlspecialchars($cu['remitente_nombre'] ?: ($cu['conductor_nombre'] ?? 'Taxista')) ?></strong>
+                        <?php if (!empty($cu['placa'])): ?>
+                            <div style="font-size: 0.75rem; color: #64748b;">Placa: <?= htmlspecialchars($cu['placa']) ?></div>
+                        <?php endif; ?>
+                    </td>
+                    <td><span class="badge" style="background: #e2e8f0; color: #1e293b;"><?= htmlspecialchars($cu['mes_periodo']) ?></span></td>
+                    <td><strong style="color: #0f172a;">S/ <?= number_format($cu['monto'], 2) ?></strong></td>
+                    <td>
+                        <?php if (!empty($srcImg)): ?>
+                        <a href="<?= $srcImg ?>" target="_blank" title="Ver comprobante" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: #0284c7; font-size: 0.8rem; font-weight: 600;">
+                            <img src="<?= $srcImg ?>" alt="Yape" style="width: 38px; height: 38px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            <span>Ver captura</span>
+                        </a>
+                        <?php else: ?>
+                        <span style="font-size: 0.75rem; color: #94a3b8;">Sin imagen</span>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php if ($cu['estado'] === 'Pendiente'): ?>
+                            <span class="badge badge-warning" style="background: #fef3c7; color: #92400e;">Pendiente</span>
+                        <?php elseif ($cu['estado'] === 'Aprobado'): ?>
+                            <span class="badge badge-success" style="background: #dcfce7; color: #166534;">Aprobado</span>
+                        <?php else: ?>
+                            <span class="badge badge-danger" style="background: #fee2e2; color: #991b1b;">Rechazado</span>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="<?= vistaUrl('vehiculos/cuotas_taxistas.php') ?>" class="btn btn-outline btn-sm" style="padding: 4px 10px; font-size: 0.78rem;">
+                            Validar
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
 

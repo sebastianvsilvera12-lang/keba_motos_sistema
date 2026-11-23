@@ -1,0 +1,528 @@
+/* ==============================================================
+   KEBA MOTOS - PANEL DE CLIENTES ESTILO UBER
+   DISEÑO MODERNO: ALTO CONTRASTE, MINIMALISTA, MAPA INTERACTIVO
+   ============================================================== */
+
+:root {
+    --uber-black: #000000;
+    --uber-dark: #121212;
+    --uber-gray-900: #1a1a1a;
+    --uber-gray-700: #545454;
+    --uber-gray-500: #757575;
+    --uber-gray-300: #e2e2e2;
+    --uber-gray-100: #f6f6f6;
+    --uber-white: #ffffff;
+    --keba-blue: #0284c7;
+    --keba-blue-dark: #0369a1;
+    --yape-purple: #742284;
+    --yape-purple-light: #fbf0fd;
+    --uber-green: #06c167;
+}
+
+body.uber-body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--uber-white);
+    color: var(--uber-black);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 1. TOP NAVBAR ESTILO UBER */
+.uber-navbar {
+    height: 64px;
+    background-color: var(--uber-black);
+    color: var(--uber-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    flex-shrink: 0;
+}
+
+.uber-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--uber-white);
+}
+
+.uber-brand img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+}
+
+.uber-brand-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.uber-brand-text .badge-client {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #2563eb;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.uber-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.uber-nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.uber-nav-link:hover, .uber-nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.uber-nav-user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.user-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1a1a1a;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+/* 2. CONTENEDOR PRINCIPAL: SPLIT SCREEN (UBER WEB) */
+.uber-main-layout {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 64px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 3. PANEL IZQUIERDO DE SOLICITUD DE VIAJE */
+.uber-panel-left {
+    width: 440px;
+    min-width: 400px;
+    height: 100%;
+    background: var(--uber-white);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
+    z-index: 500;
+    overflow-y: auto;
+    position: relative;
+}
+
+.uber-booking-header {
+    padding: 24px 24px 16px 24px;
+    border-bottom: 1px solid var(--uber-gray-100);
+}
+
+.uber-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.8px;
+    color: var(--uber-black);
+}
+
+.uber-subtitle {
+    font-size: 0.92rem;
+    color: var(--uber-gray-700);
+    margin: 0;
+}
+
+/* FORMULARIO DE RECOGIDA Y DESTINO ESTILO UBER */
+.uber-inputs-container {
+    padding: 16px 24px;
+    position: relative;
+}
+
+.inputs-timeline {
+    position: absolute;
+    left: 35px;
+    top: 36px;
+    bottom: 36px;
+    width: 2px;
+    background: var(--uber-black);
+    z-index: 1;
+}
+
+.input-box {
+    display: flex;
+    align-items: center;
+    background: var(--uber-gray-100);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    position: relative;
+    border: 1.5px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.input-box:focus-within {
+    border-color: var(--uber-black);
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.input-icon-pickup {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--uber-black);
+    margin-right: 12px;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.input-icon-dropoff {
+    width: 10px;
+    height: 10px;
+    background: var(--uber-black);
+    margin-right: 12px;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.input-box input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--uber-black);
+    outline: none;
+}
+
+.btn-loc-quick {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--uber-gray-700);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: color 0.2s;
+}
+
+.btn-loc-quick:hover {
+    color: #2563eb;
+}
+
+/* PILDORAS DE LUGARES RÁPIDOS */
+.quick-places-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 24px 16px 24px;
+    scrollbar-width: none;
+}
+
+.quick-places-row::-webkit-scrollbar {
+    display: none;
+}
+
+.place-pill {
+    background: var(--uber-gray-100);
+    border: 1px solid var(--uber-gray-300);
+    padding: 6px 14px;
+    border-radius: 18px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.place-pill:hover {
+    background: var(--uber-black);
+    color: var(--uber-white);
+    border-color: var(--uber-black);
+}
+
+/* 4. TARJETAS DE SELECCIÓN DE VEHÍCULOS (UBER STYLE) */
+.service-cards-container {
+    padding: 0 24px;
+    margin-bottom: 16px;
+}
+
+.service-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background: var(--uber-white);
+    transition: all 0.2s ease;
+}
+
+.service-card:hover {
+    background: var(--uber-gray-100);
+}
+
+.service-card.selected {
+    border-color: var(--uber-black);
+    background: #f8fafc;
+}
+
+.service-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.service-icon-wrap {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-icon-wrap img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.service-info h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--uber-black);
+}
+
+.service-details {
+    margin: 4px 0 0 0;
+    font-size: 0.82rem;
+    color: var(--uber-gray-500);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.service-details .time {
+    color: #059669;
+    font-weight: 700;
+}
+
+.service-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--uber-black);
+}
+
+/* 5. MÉTODO DE PAGO Y BOTÓN DE CONFIRMACIÓN */
+.uber-footer-actions {
+    padding: 16px 24px 24px 24px;
+    background: var(--uber-white);
+    border-top: 1px solid var(--uber-gray-100);
+    margin-top: auto;
+}
+
+.payment-method-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--uber-gray-100);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.payment-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-uber-primary {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--uber-black);
+    color: var(--uber-white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-uber-primary:hover {
+    background-color: #262626;
+    transform: translateY(-1px);
+}
+
+.btn-uber-primary:active {
+    transform: translateY(1px);
+}
+
+/* 6. PANEL DERECHO: MAPA INTERACTIVO */
+.uber-panel-right {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    background: #e5e7eb;
+}
+
+#mapaPisco {
+    width: 100%;
+    height: 100%;
+}
+
+/* OVERLAY FLOTANTE EN EL MAPA (INFO EN VIVO) */
+.map-status-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 12px 18px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.radar-dot {
+    width: 12px;
+    height: 12px;
+    background: #22c55e;
+    border-radius: 50%;
+    position: relative;
+}
+
+.radar-dot::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid #22c55e;
+    border-radius: 50%;
+    animation: radarPulse 1.6s infinite ease-out;
+}
+
+@keyframes radarPulse {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* 7. MODAL / ESTADO EN VIVO DEL VIAJE */
+.live-trip-card {
+    background: var(--uber-white);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 16px 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border: 2px solid #22c55e;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.trip-driver-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.driver-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.pin-security-badge {
+    background: #f1f5f9;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #0f172a;
+    border: 1px dashed #64748b;
+    text-align: center;
+}
+
+.pin-security-badge span {
+    display: block;
+    font-size: 1.2rem;
+    color: #2563eb;
+    letter-spacing: 2px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .uber-main-layout {
+        flex-direction: column-reverse;
+    }
+    .uber-panel-left {
+        width: 100%;
+        min-width: 100%;
+        height: 60%;
+    }
+    .uber-panel-right {
+        height: 40%;
+    }
+}

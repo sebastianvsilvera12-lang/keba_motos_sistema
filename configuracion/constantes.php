@@ -27,12 +27,17 @@ if (!defined('APP_NAME')) {
     $baseFolder = '/keba_motos_sistema/';
     define('BASE_URL', $protocol . $host . $baseFolder);
 
-    // Roles del Sistema
+    // Roles del Sistema (1: Administrador, 2: Analista, 3: Taxistas, 4: Clientes)
     define('ROL_ADMIN', 1);
-    define('ROL_PERSONAL', 2);
+    define('ROL_ADMINISTRADOR', 1);
     define('ROL_ANALISTA', 2);
+    define('ROL_PERSONAL', 2);
+    define('ROL_TAXISTAS', 3);
+    define('ROL_TAXISTA', 3);
     define('ROL_CONSULTA', 3);
     define('ROL_CONDUCTORES', 3);
+    define('ROL_CLIENTES', 4);
+    define('ROL_CLIENTE', 4);
 
     // Zona Horaria
     date_default_timezone_set('America/Lima');

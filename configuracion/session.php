@@ -20,6 +20,8 @@ function obtenerUsuarioActual() {
         'nombre' => $_SESSION['usuario_nombre'] ?? '',
         'apellidos' => $_SESSION['usuario_apellidos'] ?? '',
         'usuario' => $_SESSION['usuario_login'] ?? '',
+        'dni' => $_SESSION['usuario_dni'] ?? '',
+        'telefono' => $_SESSION['usuario_telefono'] ?? '',
         'rol_id' => $_SESSION['usuario_rol_id'] ?? null,
         'rol_nombre' => $_SESSION['usuario_rol_nombre'] ?? 'Invitado'
     ];
@@ -30,6 +32,8 @@ function iniciarSesionUsuario($usuario) {
     $_SESSION['usuario_nombre'] = $usuario['nombres'];
     $_SESSION['usuario_apellidos'] = $usuario['apellidos'];
     $_SESSION['usuario_login'] = $usuario['usuario'];
+    $_SESSION['usuario_dni'] = $usuario['dni'] ?? '';
+    $_SESSION['usuario_telefono'] = $usuario['telefono'] ?? '';
     $_SESSION['usuario_rol_id'] = $usuario['id_rol'];
     $_SESSION['usuario_rol_nombre'] = $usuario['nombre_rol'] ?? 'Usuario';
     $_SESSION['ultimo_acceso'] = time();
